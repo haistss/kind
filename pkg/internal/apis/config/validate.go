@@ -134,6 +134,10 @@ func (n *Node) Validate() error {
 		errs = append(errs, errors.Wrapf(err, "invalid portMapping"))
 	}
 
+	if n.GPUs != "" && strings.TrimSpace(n.GPUs) == "" {
+		errs = append(errs, errors.New("gpus cannot be whitespace only"))
+	}
+
 	if len(errs) > 0 {
 		return errors.NewAggregate(errs)
 	}

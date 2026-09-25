@@ -123,3 +123,29 @@ func TestLoadCurrent(t *testing.T) {
 		})
 	}
 }
+
+func TestParseGPUs(t *testing.T) {
+	t.Parallel()
+
+	rawYAML := []byte(`
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+nodes:
+- role: control-plane
+- role: worker
+  gpus: "all"
+`)
+
+	cfg, err := Parse(rawYAML)
+	if err != nil {
+		t.Fatalf("unexpected error parsing config with gpus: %v", err)
+	}
+
+	if len(cfg.Nodes) != 2 {
+		t.Fatalf("expected 2 nodes, got %d", len(cfg.Nodes))
+	}
+
+	if cfg.Nodes[1].GPUs != "all" {
+		t.Errorf("expected node 1 GPUs to be 'all', got %q", cfg.Nodes[1].GPUs)
+	}
+}

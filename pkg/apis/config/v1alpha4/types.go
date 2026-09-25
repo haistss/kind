@@ -121,6 +121,11 @@ type Node struct {
 	// binded to a host Port
 	ExtraPortMappings []PortMapping `yaml:"extraPortMappings,omitempty" json:"extraPortMappings,omitempty"`
 
+	// GPUs specifies GPU devices to pass through to the node container (e.g. "all", "0", "0,1").
+	// When set, this maps to provider-specific runtime flags (--gpus for Docker/nerdctl,
+	// or --device for Podman).
+	GPUs string `yaml:"gpus,omitempty" json:"gpus,omitempty"`
+
 	// KubeadmConfigPatches are applied to the generated kubeadm config as
 	// merge patches. The `kind` field must match the target object, and
 	// if `apiVersion` is specified it will only be applied to matching objects.
